@@ -1,6 +1,7 @@
-package model;
+package com.khan.wardroby.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,9 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Entity
@@ -21,6 +20,7 @@ public class Users implements UserDetails {
     private Long id;
 
     @Column(unique = true, nullable=false )
+    @NotNull(message="email required")
     private String email;
 
     @Column(nullable=false)
@@ -32,18 +32,30 @@ public class Users implements UserDetails {
     @Column(name="last_name",nullable = false)
     private String lastName;
 
-    @Column()
+    @Column(name="enabled")
     private Boolean enabled = true;
 
-    @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name ="email" ,referencedColumnName = "email")
+    @OneToMany(mappedBy="user" , fetch= FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval=true)
     Set<Authority> authorities = new HashSet<>();
+
+    public Users(){}
+
+    public void addAuthority(String roleName) {
+        Authority auth = new Authority();
+        auth.setUser(this);
+        auth.setAuthority(roleName);
+        this.authorities.add(auth);
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities.stream()
                 .map(auth -> new SimpleGrantedAuthority(auth.getAuthority()))
                 .collect(Collectors.toList());
+    }
+    public Set<Authority> getAuthoritiesSet() {
+        return this.authorities;
     }
 
     @Override
@@ -58,22 +70,22 @@ public class Users implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return this.enabled;
     }
 
     public Long getId() {
@@ -122,5 +134,16 @@ public class Users implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", enabled=" + enabled +
+                '}'; // Removed password and authorities
     }
 }

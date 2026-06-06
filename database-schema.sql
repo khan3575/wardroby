@@ -1,7 +1,8 @@
-CREATE DATABASE IF NOT EXISTS wardroby_db;
+DROP DATABASE IF EXISTS wardroby_db;
+CREATE DATABASE wardroby_db;
 USE wardroby_db;
 
--- 1. Main User table
+-- 1. Main User table (Stays the same)
 CREATE TABLE users (
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -12,9 +13,11 @@ CREATE TABLE users (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- 2. Authorities table
+-- 2. Refactored Authorities table
 CREATE TABLE authorities (
-    email VARCHAR(100) NOT NULL,
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT NOT NULL, -- 1. Changed from email string to a numeric column
     authority VARCHAR(50) NOT NULL,
-    FOREIGN KEY (email) REFERENCES users(email) ON DELETE CASCADE
+    -- 2. Foreign Key now points directly to the users table's primary key ID
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
