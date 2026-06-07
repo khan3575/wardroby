@@ -1,0 +1,144 @@
+:root{
+
+    /* front family for apple and android*/
+    --bs-body-font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    /*  Brand Primary  */
+    --color-brand-primary: #B5835B;
+    --color-brand-primary-dark: #8B5E48;
+    --color-brand-on-primary: #FFFFFF;
+    --color-brand-primary-soft: #F4ECE6;
+
+    /*    Surface  */
+    --color-surface-background:#FFFFFF;
+    --color-surface-canvas:#E8E6E1;
+    --color-surface-card:#FAFAF8;
+    --color-surface-input:#F4F2EE;
+    --color-surface-overlay: rgba(255,255,255, 0.92);
+
+/*        Border */
+    --color-border-subtle: #EFEDE9;
+    --color-border-strong: #D6D3CD;
+
+/*    TEXT  */
+    --color-text-primary:#1C1A17;
+    --color-text-secondary: #4A4742;
+    --color-text-on-primary:#FFFFFF;
+
+/*    Status    */
+    --color-status-destructive:#D4183D;
+    --color-status-success:#047857;
+
+/*    season/spring */
+    --color-season-spring-bg:#d1fae5;
+    --color-season-spring-fg:#047847;
+
+/*    season/summer */
+    --color-season-summer-bg:#fef3c7;
+    --color-season-summer-fg:#b45039;
+
+/*    season/autumn */
+    --color-season-autumn-bg:#ffedd5;
+    --color-season-autumn-fg:#c2410c;
+
+/*    season/winter */
+    --color-season-winter-bg:#e0f2fe;
+    --color-season-winter-fg:#0369a1;
+
+
+
+/*    overriding bootstrap properties */
+    --bs-primary: var(--color-brand-primary);
+    --bs-body-bg: var(--color-surface-background);
+    --bs-body-color: var(--color-text-primary);
+    --bs-border-color: var(--color-border-subtle);
+    --bs-success: var(--color-status-success);
+    --bs-danger: var(--color-status-destructive);
+    --bs-border-radius: 50rem;
+}
+
+[data-bs-theme="dark"]{
+    /*  Brand Primary dark */
+    --color-brand-primary: #B5835B;
+    --color-brand-primary-dark: #8B5E48;
+    --color-brand-on-primary: #FFFFFF;
+    --color-brand-primary-soft: #2A211C;
+
+    /*    Surface dark  */
+    --color-surface-background:#0E0E0F;
+    --color-surface-canvas:#1A1A1C;
+    --color-surface-card:#1F1F22;
+    --color-surface-input:#1F1F22;
+    --color-surface-overlay: rgba(0,0,0, 0.5);
+
+    /*        Border dark */
+    --color-border-subtle: #2A2A2D;
+    --color-border-strong: #3D3D40;
+
+    /*    TEXT dark */
+    --color-text-primary:#F5F4F1;
+    --color-text-secondary: #C7C4BF;
+    --color-text-on-primary:#FFFFFF;
+
+    /*    Status dark    */
+    --color-status-destructive:#FF5A75;
+    --color-status-success:#6EE7B7;
+
+    /*    season/spring  dark*/
+    --color-season-spring-bg:#103D2E;
+    --color-season-spring-fg:#6EE7B7;
+
+    /*    season/summer  dark*/
+    --color-season-summer-bg:#3D2C0E;
+    --color-season-summer-fg:#FCD34D;
+
+    /*    season/autumn  dark*/
+    --color-season-autumn-bg:#3D210E;
+    --color-season-autumn-fg:#FDBA74;
+
+    /*    season/winter  dark*/
+    --color-season-winter-bg:#0E2A3D;
+    --color-season-winter-fg:#7DD3FC;
+
+    --bs-body-bg: var(--color-surface-background);
+    --bs-body-color: var(--color-text-primary);
+    --bs-border-color: var(--color-border-subtle);
+}
+
+.type-display{
+    font-size:38px;
+    font-weight:600;
+    letter-spacing:-0.03em;
+}
+
+.type-h1{
+    font-size:30px;
+    font-weight:600;
+    letter-spacing:-0.03em;
+}
+
+.type-h2{
+    font-size:18px;
+    font-weight:600;
+    letter-spacing:-0.01em;
+}
+.type-body{
+    font-size:15px;
+    font-weight:500;
+    letter-spacing:0em;
+}
+.type-body-rest{
+    font-size:15px;
+    font-weight:400;
+    letter-spacing:0em;
+}
+.type-caption{
+    font-size:13px;
+    font-weight:400;
+    letter-spacing:0em;
+}
+
+.type-label{
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.08em;
+}

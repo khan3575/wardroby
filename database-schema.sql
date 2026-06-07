@@ -16,8 +16,23 @@ CREATE TABLE users (
 -- 2. Refactored Authorities table
 CREATE TABLE authorities (
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    user_id BIGINT NOT NULL, -- 1. Changed from email string to a numeric column
-    authority VARCHAR(50) NOT NULL,
-    -- 2. Foreign Key now points directly to the users table's primary key ID
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    authority VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE user_authorities(
+	user_id BIGINT not null,
+    auth_id BIGINT not null,
+    
+    PRIMARY KEY(user_id, auth_id),
+    
+    constraint fk_user
+		foreign key (user_id)
+        references users(id)
+        on delete cascade,
+        
+	constraint fk_authority
+		foreign key (auth_id)
+        references authorities(id)
+        on delete cascade
+    
 );
