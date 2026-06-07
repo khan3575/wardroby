@@ -35,15 +35,14 @@ public class Users implements UserDetails {
     @Column(name="enabled")
     private Boolean enabled = true;
 
-    @OneToMany(mappedBy="user" , fetch= FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval=true)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="user_authorities", joinColumns= @JoinColumn(name="user_id"), inverseJoinColumns= @JoinColumn(name="auth_id"))
     Set<Authority> authorities = new HashSet<>();
 
     public Users(){}
 
-    public void addAuthority(String roleName) {
-        Authority auth = new Authority();
-        auth.setUser(this);
-        auth.setAuthority(roleName);
+
+    public void addAuthority(Authority auth) {
         this.authorities.add(auth);
     }
 
