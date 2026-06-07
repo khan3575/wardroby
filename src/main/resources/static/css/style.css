@@ -142,3 +142,23 @@
     font-weight:600;
     letter-spacing:0.08em;
 }
+
+.bg-primary {
+    background-color: var(--color-brand-primary) !important;
+}
+
+/* 2. Fix the Blue Buttons */
+.btn-primary {
+    --bs-btn-bg: var(--color-brand-primary);
+    --bs-btn-border-color: var(--color-brand-primary);
+    --bs-btn-hover-bg: var(--color-brand-primary-dark);
+    --bs-btn-hover-border-color: var(--color-brand-primary-dark);
+    --bs-btn-active-bg: var(--color-brand-primary-dark);
+    --bs-btn-active-border-color: var(--color-brand-primary-dark);
+    color: var(--color-brand-on-primary);
+}
+
+/* 3. Fix the Text Links */
+.text-primary {
+    color: var(--color-brand-primary) !important;
+}

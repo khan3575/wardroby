@@ -2,6 +2,7 @@ package com.khan.wardroby.service;
 
 import com.khan.wardroby.dao.AuthorityRepository;
 import com.khan.wardroby.dao.UserRepository;
+import com.khan.wardroby.dto.LoginDto;
 import com.khan.wardroby.dto.UserDto;
 import com.khan.wardroby.model.Authority;
 import com.khan.wardroby.model.Users;
@@ -50,5 +51,6 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         System.out.print("successfully added a User");
     }
+
 
 }
