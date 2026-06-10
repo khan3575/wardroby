@@ -22,7 +22,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/home", true)
+                        .defaultSuccessUrl("/dashboard", true)
                         .permitAll()
                 )
                 .authorizeHttpRequests((authorize) -> authorize
@@ -33,7 +33,10 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
-                );
+                )
+                .exceptionHandling(configurer
+                        -> configurer.accessDeniedPage("/access-denied"));
+
         return http.build();
     }
 

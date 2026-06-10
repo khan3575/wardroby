@@ -1,0 +1,86 @@
+<div th:fragment="sidebar" class="col-md-3 col-lg-2 d-flex flex-column flex-shrink-0 p-3 bg-light vh-100 border-end">
+    <!-- Brand / Logo Area -->
+    <a th:href="@{/home}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+        <i class="bi bi-person-circle fs-4 me-2"></i>
+        <span class="fs-4 fw-bold">Wardroby</span>
+    </a>
+    <hr>
+
+    <nav class="nav nav-pills flex-column mb-auto">
+        <!-- MENU Section -->
+        <small class="text-uppercase fw-bold text-muted mb-2">Menu</small>
+        <ul class="nav nav-pills flex-column mb-4 gap-1">
+            <li class="nav-item">
+                <a th:href="@{/dashboard}" class="nav-link active" aria-current="page">
+                    <i class="bi bi-house-door me-2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/wardrobe}" class="nav-link link-dark">
+                    <i class="bi bi-closet me-2"></i>
+                    Wardrobe
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/statistics}" class="nav-link link-dark">
+                    <i class="bi bi-bar-chart-line me-2"></i>
+                    Statistics
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/profile}" class="nav-link link-dark">
+                    <i class="bi bi-person me-2"></i>
+                    Profile
+                </a>
+            </li>
+        </ul>
+
+        <!-- LIBRARY Section -->
+        <small class="text-uppercase fw-bold text-muted mb-2">Library</small>
+        <ul class="nav nav-pills flex-column mb-4 gap-1">
+            <li class="nav-item">
+                <a th:href="@{/favorites}" class="nav-link link-dark">
+                    <i class="bi bi-heart me-2"></i>
+                    Favorites
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/categories}" class="nav-link link-dark">
+                    <i class="bi bi-tags me-2"></i>
+                    Categories
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/seasons}" class="nav-link link-dark">
+                    <i class="bi bi-calendar-event me-2"></i>
+                    Seasons
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <hr>
+    <!-- Footer / User Area -->
+    <div class="dropdown">
+        <ul class="nav nav-pills flex-column gap-1">
+            <li class="nav-item">
+                <a th:href="@{/addItem}" class="btn btn-primary w-100 mb-2">
+                    <i class="bi bi-plus-lg me-1"></i> Add Item
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/settings}" class="nav-link link-dark">
+                    <i class="bi bi-gear me-2"></i> Settings
+                </a>
+            </li>
+            <li class="nav-item">
+                <form th:action="@{/logout}" method="post" class="p-0">
+                    <button type="submit" class="nav-link link-danger w-100 text-start border-0 bg-transparent">
+                        <i class="bi bi-box-arrow-right me-2"></i> Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
