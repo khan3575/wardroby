@@ -2,8 +2,8 @@ package com.khan.wardroby.service;
 
 import com.khan.wardroby.dao.AuthorityRepository;
 import com.khan.wardroby.dao.UserRepository;
-import com.khan.wardroby.dto.LoginDto;
 import com.khan.wardroby.dto.UserDto;
+import com.khan.wardroby.exception.UserAlreadyExistsException;
 import com.khan.wardroby.model.Authority;
 import com.khan.wardroby.model.Users;
 import jakarta.transaction.Transactional;
@@ -38,6 +38,11 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void registerNewUser(UserDto userDto)
     {
+        if(userRepository.findByEmail(userDto.getEmail()).isPresent())
+        {
+            throw new UserAlreadyExistsException("There is an account with that email address: " + userDto.getEmail());
+        }
+
         Users user = new Users();
         user.setEmail(userDto.getEmail());
         user.setFirstName(userDto.getFirstName());
@@ -51,6 +56,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         System.out.print("successfully added a User");
     }
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.khan.wardroby.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +20,7 @@ public class Users implements UserDetails {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
+    @Email
     @Column(unique = true, nullable=false )
     @NotNull(message="email required")
     private String email;
