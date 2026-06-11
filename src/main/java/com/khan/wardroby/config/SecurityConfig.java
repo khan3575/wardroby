@@ -26,7 +26,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/login", "/css/**", "/js/**", "/register", "/error").permitAll()
+                        .requestMatchers("/login", "/css/**", "/js/**", "/register", "/error", "/access-denied", "/forget-password").permitAll()
 //                        .requestMatchers("/", "/home", "/register").permitAll() // Public access
 //                        .requestMatchers("/admin/**").hasRole("ADMIN")         // Restricted to ADMIN
                         .anyRequest().authenticated())

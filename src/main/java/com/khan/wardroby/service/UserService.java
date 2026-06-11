@@ -57,6 +57,11 @@ public class UserService implements UserDetailsService {
         System.out.print("successfully added a User");
     }
 
+    public Boolean isUserExists(String email)
+    {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
 
 
 }
