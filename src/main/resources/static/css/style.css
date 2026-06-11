@@ -142,3 +142,58 @@
     font-weight:600;
     letter-spacing:0.08em;
 }
+
+.bg-primary {
+    background-color: var(--color-brand-primary) !important;
+}
+
+/* 2. Fix the Blue Buttons */
+.btn-primary {
+    --bs-btn-bg: var(--color-brand-primary);
+    --bs-btn-border-color: var(--color-brand-primary);
+    --bs-btn-hover-bg: var(--color-brand-primary-dark);
+    --bs-btn-hover-border-color: var(--color-brand-primary-dark);
+    --bs-btn-active-bg: var(--color-brand-primary-dark);
+    --bs-btn-active-border-color: var(--color-brand-primary-dark);
+    color: var(--color-brand-on-primary);
+}
+
+/* 3. Fix the Text Links */
+.text-primary {
+    color: var(--color-brand-primary) !important;
+}
+
+.sidebar-wrapper{
+    background-color : var(--color-surface-background);
+    border-right: 1px solid var(--color-border-subtle);
+}
+
+.sidebar-wrapper nav-link{
+    color: var(--color-text-secondary);
+    border-radius: var(--bs-border-radius);
+}
+.sidebar-wrapper .nav-link i {
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+}
+
+.sidebar-wrapper .nav-link:hover {
+    background-color: var(--color-surface-input);
+    color: var(--color-text-primary);
+}
+.sidebar-wrapper .nav-link.active {
+    background-color: var(--color-brand-primary-soft);
+    color: var(--color-brand-primary);
+    font-weight: 600;
+}
+.sidebar-wrapper .nav-link.active i {
+    color: var(--color-brand-primary);
+}
+
+.brand-box {
+    width: 32px;
+    height: 32px;
+    background-color: var(--color-brand-primary);
+    border-radius: 8px; /* Hardcoded because your default is 50rem */
+    color: var(--color-brand-on-primary);
+}

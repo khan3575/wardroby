@@ -11,15 +11,11 @@ public class Authority {
     private Long id;
 
     @NotNull
-    @Column(name="authority")
+    @Column(name="authority", unique = true)
     private String authority;
 
-    @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
-    private Users user;
 
     public Authority(){}
-
 
     public Long getId() {
         return id;
@@ -31,14 +27,6 @@ public class Authority {
 
     public String getAuthority() {
         return authority;
-    }
-
-    public Users getUser() {
-        return user;
-    }
-
-    public void setUser(Users user) {
-        this.user = user;
     }
 
     public void setAuthority(String authority) {

@@ -1,0 +1,49 @@
+<div th:fragment="sidebar"
+     xmlns:th="https://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+     class="sidebar-wrapper col-md-3 d-flex flex-column vh-100 p-3" >
+              <nav class="flex-column mb-5">
+                <div class="nav-header mb-2">
+                  <a th:href="@{/dashboard}" class="nav-brand text-decoration-none text-dark align-items-center type-h2"><i class="bi bi-person"></i>Wardroby</a>
+                </div>
+                <div >
+                  <span class="text-dark align-self-center type-h2 mb-2 ">MENU</span>
+                  <ul class="nav nav-pills flex-column">
+                    <li class="nav-link"> <a th:href="@{/dashboard} " class="text-decoration-none text-dark"> <i class="bi bi-house "></i> Dashboard </a></li>
+                    <li class="nav-link"> <a  th:href="@{/wardrobe}" class="text-decoration-none text-dark"><i class="bi bi-card-list"></i>Wardrobe </a> </li>
+                    <li class="nav-link"> <a th:href="@{/statistics}" class="text-decoration-none text-dark"> <i class="bi bi-bar-chart-steps"></i>Statistics </a></li>
+                    <li class="nav-link"> <a th:href="@{/profile}" class="text-decoration-none text-dark">  <i class="bi bi-person"></i>Profile  </a> </li>
+                  </ul>
+                </div>
+              </nav>
+              <nav class="flex-column mb-5">
+                <div class="nav-header">
+                  <span class="text-dark align-self-center type-h2 mb-2">LIBRARY</span>
+                  <ul class="nav nav-pills flex-column">
+                    <li class="nav-link"> <a class="text-decoration-none text-dark" th:href="@{/favourties}">Favourites</a></li>
+                    <li class="nav-link"> <a class="text-decoration-none text-dark" th:href="@{/categories}">Categories </a></li>
+                    <li class="nav-link"> <a class="text-decoration-none text-dark" th:href="@{/seasons}">Seasons </a></li>
+                  </ul>
+                </div>
+              </nav>
+              <nav class="flex-column">
+                <div>
+                  <ul class="nav nav-pills flex-column">
+                    <li class="nav-link">
+
+                      <a class="btn btn-primary d-flex w-100" th:href="@{/addNewItem}">
+                        <i class="bi bi-plus"></i>
+                        Add New Item
+                      </a>
+                    </li>
+                    <li class="nav-link"><a class="text-decoration-none text-dark" th:href="@{/setting}"> <i class="bi bi-gear"></i> Settings</a> </li>
+                    <li class="nav-link">
+                        <a class="text-decoration-none text-dark d-flex align-items-center justify-content-between" th:href="@{/logout}">
+                            <span sec:authentication="principal.firstName">Username</span>
+                            <i class="bi bi-box-arrow-right"></i>
+                        </a>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+            </div>

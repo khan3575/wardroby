@@ -2,6 +2,7 @@ package com.khan.wardroby.controller;
 
 import com.khan.wardroby.dao.UserRepository;
 import com.khan.wardroby.dto.UserDto;
+import com.khan.wardroby.exception.UserAlreadyExistsException;
 import com.khan.wardroby.model.Authority;
 import com.khan.wardroby.model.Users;
 import com.khan.wardroby.service.UserService;
@@ -41,19 +42,26 @@ public class RegistrationController {
     public String submitForm(@Valid @ModelAttribute("user") UserDto userDto , BindingResult result)
     {
         System.out.println("userdto "+userDto);
+
         if(result.hasErrors())
         {
             return "registration-page";
         }
+        if(!userDto.getPassword().equals(userDto.getConfirmPassword()))
+        {
+            result.rejectValue("password", "user.invalid-pass", "Password miss matched");
+            return "registration-page";
+        }
         try{
             userService.registerNewUser(userDto);
-            return "redirect:/login?registered";
         }
-        catch(Exception e)
+        catch(UserAlreadyExistsException e)
         {
-            e.printStackTrace();
+            System.out.println("Error : " + e.getMessage());
+            result.rejectValue("email", "user.exits", e.getMessage());
+            return "registration-page";
         }
-       return "registration-page";
+        return "redirect:/login?registered";
     }
 
 

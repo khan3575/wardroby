@@ -1,6 +1,7 @@
 package com.khan.wardroby.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +20,7 @@ public class Users implements UserDetails {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
+    @Email
     @Column(unique = true, nullable=false )
     @NotNull(message="email required")
     private String email;
@@ -35,15 +37,14 @@ public class Users implements UserDetails {
     @Column(name="enabled")
     private Boolean enabled = true;
 
-    @OneToMany(mappedBy="user" , fetch= FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval=true)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="user_authorities", joinColumns= @JoinColumn(name="user_id"), inverseJoinColumns= @JoinColumn(name="auth_id"))
     Set<Authority> authorities = new HashSet<>();
 
     public Users(){}
 
-    public void addAuthority(String roleName) {
-        Authority auth = new Authority();
-        auth.setUser(this);
-        auth.setAuthority(roleName);
+
+    public void addAuthority(Authority auth) {
         this.authorities.add(auth);
     }
 

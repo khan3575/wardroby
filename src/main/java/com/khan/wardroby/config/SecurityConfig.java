@@ -18,22 +18,25 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                // .csrf(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults())
+//                .httpBasic(Customizer.withDefaults())
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/home", true)
+                        .defaultSuccessUrl("/dashboard", true)
                         .permitAll()
                 )
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/login", "/css/**", "/js/**", "/register").permitAll()
+                        .requestMatchers("/login", "/css/**", "/js/**", "/register", "/error", "/access-denied", "/forget-password").permitAll()
 //                        .requestMatchers("/", "/home", "/register").permitAll() // Public access
 //                        .requestMatchers("/admin/**").hasRole("ADMIN")         // Restricted to ADMIN
                         .anyRequest().authenticated())
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/logint?logout")
+                        .logoutSuccessUrl("/login?logout")
                         .permitAll()
-                );
+                )
+                .exceptionHandling(configurer
+                        -> configurer.accessDeniedPage("/access-denied"));
+
         return http.build();
     }
 
