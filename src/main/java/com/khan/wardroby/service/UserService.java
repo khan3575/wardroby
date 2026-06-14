@@ -78,17 +78,6 @@ public class UserService implements UserDetailsService {
         if(password == null || !password.equals(confirmPassword))
         {
             throw new InvalidPasswordException("Password do not match or are empty");
-          Optional<Users> user=  userRepository.findById(userId);
-          if(user.isPresent())
-          {
-              Users userObj = user.get();
-              userObj.setPassword(encoder.encode(password));
-              userRepository.save(userObj);
-              return true;
-          }
-          else{
-              throw new RuntimeException("User not found");
-          }
         }
        Users user= userRepository.findById(userId).orElseThrow(()->
                new UserNotFoundException("User couldnt found by id : "+userId));
