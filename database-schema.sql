@@ -36,3 +36,13 @@ CREATE TABLE user_authorities(
         on delete cascade
     
 );
+
+CREATE table password_reset_tokens(
+	id BIGINT not null primary key AUTO_INCREMENT,
+    user_id BIGINT not null,
+    token_hash varchar(255) not null,
+    expiry_date datetime not null,
+    used tinyint not null default (0),
+    constraint fk_password_reset_token foreign key(user_id) references users(id) on delete cascade
+
+);
