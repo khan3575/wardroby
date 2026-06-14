@@ -1,6 +1,6 @@
 package com.khan.wardroby.exception;
 
-public class InvalidPasswordResetTokenException extends RuntimeException{
+public class InvalidPasswordResetTokenException extends AuthException{
     public InvalidPasswordResetTokenException() {
     }
 
