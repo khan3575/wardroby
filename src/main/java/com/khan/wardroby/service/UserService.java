@@ -69,5 +69,25 @@ public class UserService implements UserDetailsService {
     }
 
 
+    public Boolean changePassword(Long userId, String password, String confirmPassword)
+    {
+        if(password != null && password.equals(confirmPassword))
+        {
+          Optional<Users> user=  userRepository.findById(userId);
+          if(user.isPresent())
+          {
+              Users userObj = user.get();
+              userObj.setPassword(encoder.encode(password));
+              userRepository.save(userObj);
+              return true;
+          }
+          else{
+              throw new RuntimeException("User not found");
+          }
+        }
+        return false;
+    }
+
+
 
 }

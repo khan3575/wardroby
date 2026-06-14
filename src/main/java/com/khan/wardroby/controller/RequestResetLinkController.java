@@ -32,10 +32,18 @@ public class RequestResetLinkController {
     @PostMapping()
     public String processFrom(@RequestParam("email") String email, Model model)
     {
-        service.findByEmail(email).ifPresent(user -> {
-            String rawToken = tokenService.createAndSaveResetToken(email);
-            emailService.sendPasswordResetEmail(email, rawToken);
-        });
+        try{
+            service.findByEmail(email).ifPresent(user -> {
+                String rawToken = tokenService.createAndSaveResetToken(email);
+                emailService.sendPasswordResetEmail(email, rawToken);
+            });
+        }
+        catch(RuntimeException e)
+        {
+            model.addAttribute("wait", true);
+            e.printStackTrace();
+        }
+
 
 
         // Industry Standard: Always show success to prevent user enumeration
