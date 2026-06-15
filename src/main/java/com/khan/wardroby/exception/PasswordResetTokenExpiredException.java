@@ -1,6 +1,6 @@
 package com.khan.wardroby.exception;
 
-public class PasswordResetTokenExpiredException extends RuntimeException{
+public class PasswordResetTokenExpiredException extends AuthException{
     public PasswordResetTokenExpiredException(String message, Throwable cause) {
         super(message, cause);
     }
