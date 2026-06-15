@@ -4,6 +4,8 @@ import com.khan.wardroby.dao.PasswordResetTokenRepository;
 import com.khan.wardroby.dao.UserRepository;
 import com.khan.wardroby.dto.ResetDto;
 import com.khan.wardroby.exception.InvalidPasswordResetTokenException;
+import com.khan.wardroby.exception.ResetTokenException;
+import com.khan.wardroby.exception.TokenUsedException;
 import com.khan.wardroby.model.PasswordResetToken;
 import com.khan.wardroby.model.Users;
 import jakarta.transaction.Transactional;
@@ -20,38 +22,30 @@ import java.util.UUID;
 
 @Service
 public class PasswordResetTokenService {
-    private UserRepository userRepo;
     private PasswordResetTokenRepository repository;
 
 
     @Autowired
-    PasswordResetTokenService(PasswordResetTokenRepository repository, UserRepository userRepo) {
+    PasswordResetTokenService(PasswordResetTokenRepository repository) {
         this.repository = repository;
-        this.userRepo = userRepo;
     }
 
     @Transactional
-    public String createAndSaveResetToken(String email) {
-        Optional<Users> user = userRepo.findByEmail(email);
-        if (user.isEmpty()) {
-            throw new RuntimeException("user not found");
-        }
-        String rawToken = "";
-        Optional<PasswordResetToken> existingToken = repository.findFirstByUserIdOrderByIdDesc(user.get().getId());
+    public String createAndSaveResetToken(Long userId) {
+
+        Optional<PasswordResetToken> existingToken = repository.findFirstByUserIdOrderByIdDesc(userId);
         if (existingToken.isPresent()) {
             // past 2 minute?
             PasswordResetToken token = existingToken.get();
             Instant tokenCreationTime = token.getExpiryDate().minus(15, ChronoUnit.MINUTES);
-            if (tokenCreationTime.isBefore(Instant.now().minus(2, ChronoUnit.MINUTES))) {
-                rawToken = createToken(user);
-            } else {
-                throw new RuntimeException("Please wait 2 minute before requesting another reset link.");
+            if (tokenCreationTime.isAfter(Instant.now().minus(2, ChronoUnit.MINUTES)))
+            {
+                throw new ResetTokenException("Please wait 2 minute before trying again");
             }
         }
-
-
-        return createToken(user);
+        return createToken(userId);
     }
+
 
 
     public Optional<PasswordResetToken> verifyResetToken(String rawToken) {
@@ -64,11 +58,12 @@ public class PasswordResetTokenService {
         }
         PasswordResetToken token = tokenOptional.get();
 
-        if (token.getUsed() || token.getExpiryDate().isBefore(Instant.now())) {
+        if(token.getUsed() || token.getExpiryDate().isBefore(Instant.now())) {
             return Optional.empty();
         }
         return Optional.of(token);
     }
+
 
     public String hashSha256(String input) {
         try {
@@ -87,14 +82,15 @@ public class PasswordResetTokenService {
         }
     }
 
+
     @Transactional
-    public String createToken(Optional<Users> user) {
+    public String createToken(Long userId) {
         String rawToken = UUID.randomUUID().toString();
         String hashedToken = hashSha256(rawToken);
 
 
         PasswordResetToken passToken = new PasswordResetToken();
-        passToken.setUserId(user.get().getId());
+        passToken.setUserId(userId);
         passToken.setTokenHash(hashedToken);
         passToken.setExpiryDate(Instant.now().plus(15, ChronoUnit.MINUTES));
         passToken.setUsed(false);
@@ -102,6 +98,7 @@ public class PasswordResetTokenService {
         repository.save(passToken);
         return rawToken;
     }
+
 
     @Transactional
     public Optional<ResetDto> proccessToken(String token)
@@ -116,7 +113,6 @@ public class PasswordResetTokenService {
         ResetDto resetDto = new ResetDto();
 
         PasswordResetToken resetToken = tokenOptional.get();
-        Instant.now().isBefore(resetToken.getExpiryDate());
         resetDto.setUserId(resetToken.getUserId());
         resetDto.setTokenHash(resetToken.getTokenHash());
         if(!resetToken.getUsed())
@@ -130,6 +126,23 @@ public class PasswordResetTokenService {
 
         return Optional.of(resetDto);
     }
+
+    public PasswordResetToken verifyTokenForDisplay(String rawToken)
+    {
+        String hashedToken = hashSha256(rawToken);
+        PasswordResetToken token = repository.findByTokenHash(hashedToken).orElseThrow(()-> new InvalidPasswordResetTokenException("Invalid Link"));
+
+        if(token.getUsed()){
+            throw new TokenUsedException("Linked already used");
+        }
+        if(token.getExpiryDate().isBefore(Instant.now()))
+        {
+            throw new InvalidPasswordResetTokenException("Link already expired");
+        }
+        return token;
+    }
+
+
 
 
 

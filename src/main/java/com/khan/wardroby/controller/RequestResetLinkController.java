@@ -1,5 +1,7 @@
 package com.khan.wardroby.controller;
 
+import com.khan.wardroby.exception.UserNotFoundException;
+import com.khan.wardroby.model.Users;
 import com.khan.wardroby.service.EmailService;
 import com.khan.wardroby.service.PasswordResetTokenService;
 import com.khan.wardroby.service.UserService;
@@ -32,20 +34,8 @@ public class RequestResetLinkController {
     @PostMapping()
     public String processFrom(@RequestParam("email") String email, Model model)
     {
-        try{
-            service.findByEmail(email).ifPresent(user -> {
-                String rawToken = tokenService.createAndSaveResetToken(email);
-                emailService.sendPasswordResetEmail(email, rawToken);
-            });
-        }
-        catch(RuntimeException e)
-        {
-            model.addAttribute("wait", true);
-            e.printStackTrace();
-        }
 
-
-
+        service.initiatePasswordReset(email);
         // Industry Standard: Always show success to prevent user enumeration
         model.addAttribute("submitted", true); //learn more about this part?
 

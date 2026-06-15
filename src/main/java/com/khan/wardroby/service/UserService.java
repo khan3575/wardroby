@@ -24,13 +24,20 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
     private AuthorityRepository authRepository;
     private PasswordEncoder encoder;
+    private PasswordResetTokenService tokenService;
+    private EmailService emailService;
     UserService(){}
     @Autowired
-    UserService(UserRepository userRepository, AuthorityRepository authRepository, PasswordEncoder encoder)
+    UserService(UserRepository userRepository, AuthorityRepository authRepository,
+                PasswordEncoder encoder, PasswordResetTokenService tokenService,
+                EmailService emailService
+    )
     {
         this.userRepository = userRepository;
         this.authRepository = authRepository;
         this.encoder = encoder;
+        this.tokenService = tokenService;
+        this.emailService = emailService;
     }
 
     @Override
@@ -88,5 +95,14 @@ public class UserService implements UserDetailsService {
     }
 
 
+    public void initiatePasswordReset(String email)
+    {
+        userRepository.findByEmail(email).ifPresent(user ->{
+            String rawToken = tokenService.createAndSaveResetToken(user.getId());
+            emailService.sendPasswordResetEmail(email, rawToken);
+        });
+
+
+    }
 
 }

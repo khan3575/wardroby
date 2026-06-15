@@ -33,21 +33,9 @@ public class PasswordResetController {
 
     @GetMapping()
     public String showResetPasswordForm(@RequestParam("token") String token, Model model) {
-        try{
-            Optional<ResetDto> resetDto = tokenService.proccessToken(token);
-            if(resetDto.isPresent())
-            {
-                model.addAttribute("token", resetDto.get());
-                return "redirect:reset-password";
-            }
-            else{
-                return "reset-password-failed";
-            }
-        }
-        catch (InvalidPasswordResetTokenException e) {
-            model.addAttribute("invalid-token", true);
-        }
-        return "reset-password-failed";
+       tokenService.verifyTokenForDisplay(token);
+       model.addAttribute("token",token);
+       return "reset-password";
     }
 
 

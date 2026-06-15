@@ -45,5 +45,12 @@ public class GlobalExceptionHandler {
     }
 
 
+    public String handleResetTokenErrors(ResetTokenException e, Model model)
+    {
+        logger.warn("Reset Token error : {}", e.getMessage());
+        model.addAttribute("errorMessage", e.getMessage());
+        return "login";
+    }
+
 
 }
