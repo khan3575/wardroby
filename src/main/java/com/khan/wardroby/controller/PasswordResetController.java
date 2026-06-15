@@ -1,9 +1,5 @@
 package com.khan.wardroby.controller;
 
-import com.khan.wardroby.dto.ResetDto;
-import com.khan.wardroby.exception.InvalidPasswordResetTokenException;
-import com.khan.wardroby.exception.PasswordResetTokenExpiredException;
-import com.khan.wardroby.exception.TokenUsedException;
 import com.khan.wardroby.service.PasswordResetTokenService;
 import com.khan.wardroby.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Optional;
 
 
 @Controller
@@ -40,25 +34,12 @@ public class PasswordResetController {
 
 
     @PostMapping()
-    public String processPasswordResetForm(@RequestParam("token") ResetDto token,
+    public String processPasswordResetForm(@RequestParam("token") String token,
                                            @RequestParam("password") String password,
                                            @RequestParam("confirm-password") String confirmPassword,
                                            Model model) {
-        try {
-            if (token.getExpired()) {
-                throw new PasswordResetTokenExpiredException("Token already expired try again");
-            }
-            if (token.getUsed()) {
-                throw new TokenUsedException("Token already used.");
-            }
-
-            service.changePassword(token.getUserId(), password, confirmPassword);
-        } catch (RuntimeException e){
-
-        }
-
-
-        return "reset-password";
+        service.completePasswordReset(token, password, confirmPassword);
+        return "redirect:login?resetSuccess";
     }
 
 

@@ -48,23 +48,6 @@ public class PasswordResetTokenService {
 
 
 
-    public Optional<PasswordResetToken> verifyResetToken(String rawToken) {
-        String hashedToken = hashSha256(rawToken);
-
-        Optional<PasswordResetToken> tokenOptional = repository.findByTokenHash(hashedToken);
-
-        if (tokenOptional.isEmpty()) {
-            return Optional.empty();
-        }
-        PasswordResetToken token = tokenOptional.get();
-
-        if(token.getUsed() || token.getExpiryDate().isBefore(Instant.now())) {
-            return Optional.empty();
-        }
-        return Optional.of(token);
-    }
-
-
     public String hashSha256(String input) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -98,35 +81,7 @@ public class PasswordResetTokenService {
         repository.save(passToken);
         return rawToken;
     }
-
-
-    @Transactional
-    public Optional<ResetDto> proccessToken(String token)
-    {
-        // if token exists
-        String hashedToken = hashSha256(token);
-        Optional<PasswordResetToken> tokenOptional= repository.findByTokenHash(hashedToken);
-        if(tokenOptional.isEmpty())
-        {
-            throw new InvalidPasswordResetTokenException("Token not found in DATABASE");
-        }
-        ResetDto resetDto = new ResetDto();
-
-        PasswordResetToken resetToken = tokenOptional.get();
-        resetDto.setUserId(resetToken.getUserId());
-        resetDto.setTokenHash(resetToken.getTokenHash());
-        if(!resetToken.getUsed())
-        {
-            //if not used then use it.
-            resetToken.setUsed(true);
-            repository.save(resetToken);
-        }
-        resetDto.setUsed(true);
-        resetDto.setExpired(resetToken.getExpiryDate().isBefore(Instant.now()));
-
-        return Optional.of(resetDto);
-    }
-
+    
     public PasswordResetToken verifyTokenForDisplay(String rawToken)
     {
         String hashedToken = hashSha256(rawToken);

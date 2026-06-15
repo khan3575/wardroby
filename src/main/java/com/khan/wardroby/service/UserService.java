@@ -8,6 +8,7 @@ import com.khan.wardroby.exception.InvalidPasswordException;
 import com.khan.wardroby.exception.UserAlreadyExistsException;
 import com.khan.wardroby.exception.UserNotFoundException;
 import com.khan.wardroby.model.Authority;
+import com.khan.wardroby.model.PasswordResetToken;
 import com.khan.wardroby.model.Users;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,7 @@ public class UserService implements UserDetailsService {
     }
 
 
+    @Transactional
     public void changePassword(Long userId, String password, String confirmPassword)
     {
 
@@ -101,8 +103,15 @@ public class UserService implements UserDetailsService {
             String rawToken = tokenService.createAndSaveResetToken(user.getId());
             emailService.sendPasswordResetEmail(email, rawToken);
         });
-
-
     }
+
+    @Transactional
+    public void completePasswordReset(String rawToken, String password, String confirmPassword)
+    {
+        PasswordResetToken token = tokenService.verifyTokenForDisplay(rawToken);
+        this.changePassword(token.getUserId(), password, confirmPassword);
+        token.setUsed(true);
+    }
+
 
 }
