@@ -1,13 +1,10 @@
 package com.khan.wardroby.service;
 
 import com.khan.wardroby.dao.PasswordResetTokenRepository;
-import com.khan.wardroby.dao.UserRepository;
-import com.khan.wardroby.dto.ResetDto;
 import com.khan.wardroby.exception.InvalidPasswordResetTokenException;
 import com.khan.wardroby.exception.ResetTokenException;
 import com.khan.wardroby.exception.TokenUsedException;
 import com.khan.wardroby.model.PasswordResetToken;
-import com.khan.wardroby.model.Users;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
