@@ -2,7 +2,7 @@ package com.khan.wardroby.dto;
 
 public class PasswordResetTokenDTO {
     private Long userId;
-    private String TokenHash;
+    private String token;
     private Boolean used;
     private Boolean expired;
 
@@ -14,12 +14,12 @@ public class PasswordResetTokenDTO {
         this.userId = userId;
     }
 
-    public String getTokenHash() {
-        return TokenHash;
+    public String getToken() {
+        return token;
     }
 
-    public void setTokenHash(String tokenHash) {
-        TokenHash = tokenHash;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public Boolean getUsed() {
@@ -40,9 +40,9 @@ public class PasswordResetTokenDTO {
 
     @Override
     public String toString() {
-        return "ResetDTO{" +
+        return "PasswordResetTokenDTO{" +
                 "userId=" + userId +
-                ", TokenHash='" + TokenHash + '\'' +
+                ", TokenHash='" + token + '\'' +
                 ", used=" + used +
                 ", expired=" + expired +
                 '}';
