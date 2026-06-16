@@ -18,19 +18,23 @@ import java.util.stream.Collectors;
 public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
     @Email
-    @Column(unique = true, nullable=false )
+    @Column(name="email" , unique = true, nullable=false )
     @NotNull(message="email required")
     private String email;
 
-    @Column(nullable=false)
+    @NotNull
+    @Column(name="password" , nullable=false)
     private String password;
 
+    @NotNull
     @Column(name="first_name" , nullable =false)
     private String firstName;
 
+    @NotNull
     @Column(name="last_name",nullable = false)
     private String lastName;
 
