@@ -46,3 +46,44 @@ CREATE table password_reset_tokens(
     constraint fk_password_reset_token foreign key(user_id) references users(id) on delete cascade
 
 );
+
+-- items --
+
+CREATE TABLE items(
+	id BIGINT PRIMARY KEY auto_increment,
+    user_id BIGINT not null,
+    name varchar(255) not null,
+    brand varchar(100),
+    color varchar(50),
+    image_path varchar(255) not null,
+    category varchar(50) not null,
+    season varchar(50) not null,
+    created_at datetime default CURRENT_TIMESTAMP,
+    constraint fk_items_users
+    foreign key (user_id)
+    references users(id) on delete cascade
+);
+
+CREATE TABLE combos(
+	id BIGINT not null primary key auto_increment,
+    user_id BIGINT not null,
+    name varchar(255) not null,
+    occasion varchar(50) not null,
+    created_at datetime default current_timestamp,
+    constraint fk_combo_users
+    foreign key (user_id)
+    references users(id) on delete cascade
+);
+
+CREATE TABLE combo_items(
+	combo_id BIGINT not null,
+    item_id BIGINT not null,
+    primary key(combo_id, item_id),
+    constraint fk_ci_combo
+    foreign key (combo_id)
+    references combos(id) on delete cascade,
+    constraint fk_ci_items
+    foreign key (item_id)
+    references items(id)
+    on delete cascade
+);
