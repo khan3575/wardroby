@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class UserDto {
+public class UserDTO {
     @Email
     @NotBlank
     private String email;
@@ -26,7 +26,7 @@ public class UserDto {
     @Size(min=1)
     private String lastName;
 
-    public UserDto(){}
+    public UserDTO(){}
 
     public String getEmail() {
         return email;

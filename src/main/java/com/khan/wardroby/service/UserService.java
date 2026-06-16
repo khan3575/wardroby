@@ -2,11 +2,9 @@ package com.khan.wardroby.service;
 
 import com.khan.wardroby.dao.AuthorityRepository;
 import com.khan.wardroby.dao.UserRepository;
-import com.khan.wardroby.dto.UserDto;
-import com.khan.wardroby.exception.DatabaseException;
-import com.khan.wardroby.exception.InvalidPasswordException;
-import com.khan.wardroby.exception.UserAlreadyExistsException;
-import com.khan.wardroby.exception.UserNotFoundException;
+import com.khan.wardroby.dto.UserDTO;
+import com.khan.wardroby.exception.*;
+import com.khan.wardroby.mapper.UserMapper;
 import com.khan.wardroby.model.Authority;
 import com.khan.wardroby.model.PasswordResetToken;
 import com.khan.wardroby.model.Users;
@@ -14,7 +12,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,16 +19,17 @@ import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
-    private UserRepository userRepository;
-    private AuthorityRepository authRepository;
-    private PasswordEncoder encoder;
-    private PasswordResetTokenService tokenService;
-    private EmailService emailService;
-    UserService(){}
+    private final UserRepository userRepository;
+    private final AuthorityRepository authRepository;
+    private final PasswordEncoder encoder;
+    private final PasswordResetTokenService tokenService;
+    private final EmailService emailService;
+    private final UserMapper userMapper;
+
     @Autowired
     UserService(UserRepository userRepository, AuthorityRepository authRepository,
                 PasswordEncoder encoder, PasswordResetTokenService tokenService,
-                EmailService emailService
+                EmailService emailService, UserMapper userMapper
     )
     {
         this.userRepository = userRepository;
@@ -39,6 +37,7 @@ public class UserService implements UserDetailsService {
         this.encoder = encoder;
         this.tokenService = tokenService;
         this.emailService = emailService;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -49,31 +48,26 @@ public class UserService implements UserDetailsService {
 
 
     @Transactional
-    public void registerNewUser(UserDto userDto)
+    public void registerNewUser(UserDTO userDto)
     {
+        if(userDto.getPassword().equals(userDto.getConfirmPassword()))
+        {
+            throw new InvalidPasswordException("Invalid Email or Password");
+        }
         if(userRepository.findByEmail(userDto.getEmail()).isPresent())
         {
             throw new UserAlreadyExistsException("There is an account with that email address: " + userDto.getEmail());
         }
 
-        Users user = new Users();
-        user.setEmail(userDto.getEmail());
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
+        Users user = userMapper.toEntity(userDto);
         user.setPassword(encoder.encode(userDto.getPassword()));
-
-        // Example of adding a default role
-        // Assuming your Authority model setup
-        Authority auth =  authRepository.findByAuthority("ROLE_USER").orElseThrow(()-> new DatabaseException("Couldn't fetch authority from database"));
+        Authority auth = authRepository.findByAuthority("ROLE_USER")
+                .orElseThrow(() -> new AuthorityNotFoundException("Default authority not found"));
         user.addAuthority(auth);
-        userRepository.save(user);
+
         System.out.print("successfully added a User");
     }
 
-    public Boolean isUserExists(String email)
-    {
-        return userRepository.findByEmail(email).isPresent();
-    }
     public Optional<Users> findByEmail(String email)
     {
         return userRepository.findByEmail(email);
@@ -89,11 +83,10 @@ public class UserService implements UserDetailsService {
             throw new InvalidPasswordException("Password do not match or are empty");
         }
        Users user= userRepository.findById(userId).orElseThrow(()->
-               new UserNotFoundException("User couldnt found by id : "+userId));
+               new UserNotFoundException("User couldn't found by id : "+userId));
 
 
         user.setPassword(encoder.encode(password));
-        userRepository.save(user);
     }
 
 

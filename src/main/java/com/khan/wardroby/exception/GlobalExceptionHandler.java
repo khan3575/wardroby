@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler({PasswordResetTokenExpiredException.class,
-            InvalidPasswordResetTokenException.class,TokenUsedException.class})
+            InvalidPasswordResetTokenException.class,TokenUsedException.class, AuthorityNotFoundException.class})
     public String handlePasswordResetError(AuthException ex, Model model)
     {
         logger.warn("Password reset failed {}", ex.getMessage());
