@@ -1,6 +1,6 @@
 package com.khan.wardroby.dto;
 
-public class ResetDTO {
+public class PasswordResetTokenDTO {
     private Long userId;
     private String TokenHash;
     private Boolean used;
