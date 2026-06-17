@@ -42,7 +42,7 @@ public class PasswordResetTokenDTO {
     public String toString() {
         return "PasswordResetTokenDTO{" +
                 "userId=" + userId +
-                ", TokenHash='" + token + '\'' +
+                ", token='" + token + '\'' +
                 ", used=" + used +
                 ", expired=" + expired +
                 '}';

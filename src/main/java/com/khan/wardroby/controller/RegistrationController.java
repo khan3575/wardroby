@@ -4,6 +4,8 @@ import com.khan.wardroby.dto.UserDTO;
 import com.khan.wardroby.exception.UserAlreadyExistsException;
 import com.khan.wardroby.service.UserService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/register")
 public class RegistrationController {
 
+    private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);
 
     private UserService userService;
 
@@ -35,7 +38,7 @@ public class RegistrationController {
     @PostMapping
     public String submitForm(@Valid @ModelAttribute("user") UserDTO userDto , BindingResult result)
     {
-        System.out.println("userdto "+userDto);
+        logger.debug("Attempting to register user: {}", userDto.getEmail());
 
         if(result.hasErrors())
         {
@@ -51,7 +54,7 @@ public class RegistrationController {
         }
         catch(UserAlreadyExistsException e)
         {
-            System.out.println("Error : " + e.getMessage());
+            logger.warn("Registration failed - user already exists: {}", userDto.getEmail());
             result.rejectValue("email", "user.exits", e.getMessage());
             return "registration-page";
         }
