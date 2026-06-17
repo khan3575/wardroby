@@ -16,9 +16,9 @@ public class PasswordResetToken {
     @Column(name="id")
     private Long id;
 
-    @Column(name="user_id")
-    @NotNull
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id", nullable=false)
+    private Users user;
 
     @Column(name="token_hash")
     @NotNull
@@ -40,12 +40,12 @@ public class PasswordResetToken {
     }
 
 
-    public Long getUserId() {
-        return userId;
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(Long user_id) {
-        this.userId = user_id;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     public String getTokenHash() {
@@ -76,7 +76,7 @@ public class PasswordResetToken {
     public String toString() {
         return "PasswordResetToken{" +
                 "id=" + id +
-                ", user_id=" + userId +
+                ", user=" + user +
                 ", tokenHash='" + tokenHash + '\'' +
                 ", expiryDate=" + expiryDate +
                 ", used=" + used +

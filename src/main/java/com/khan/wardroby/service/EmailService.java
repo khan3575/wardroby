@@ -1,5 +1,7 @@
 package com.khan.wardroby.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
+    private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
     private final JavaMailSender mailSender;
 
     @Autowired
@@ -35,7 +38,7 @@ public class EmailService {
         // 3. Send the email
         mailSender.send(message);
 
-        System.out.println("Reset email successfully sent to: " + userEmail);
+        logger.info("Reset email successfully sent to: {}", userEmail);
     }
 
 

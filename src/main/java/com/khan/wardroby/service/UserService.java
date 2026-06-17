@@ -6,9 +6,10 @@ import com.khan.wardroby.dto.UserDTO;
 import com.khan.wardroby.exception.*;
 import com.khan.wardroby.mapper.UserMapper;
 import com.khan.wardroby.model.Authority;
-import com.khan.wardroby.model.PasswordResetToken;
 import com.khan.wardroby.model.Users;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,24 +20,21 @@ import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final AuthorityRepository authRepository;
     private final PasswordEncoder encoder;
-    private final PasswordResetTokenService tokenService;
-    private final EmailService emailService;
     private final UserMapper userMapper;
 
     @Autowired
     UserService(UserRepository userRepository, AuthorityRepository authRepository,
-                PasswordEncoder encoder, PasswordResetTokenService tokenService,
-                EmailService emailService, UserMapper userMapper
+                PasswordEncoder encoder,
+                UserMapper userMapper
     )
     {
         this.userRepository = userRepository;
         this.authRepository = authRepository;
         this.encoder = encoder;
-        this.tokenService = tokenService;
-        this.emailService = emailService;
         this.userMapper = userMapper;
     }
 
@@ -50,11 +48,11 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void registerNewUser(UserDTO userDto)
     {
-        if(userDto.getPassword().equals(userDto.getConfirmPassword()))
+        if(!userDto.getPassword().equals(userDto.getConfirmPassword()))
         {
             throw new InvalidPasswordException("Invalid Email or Password");
         }
-        if(userRepository.findByEmail(userDto.getEmail()).isPresent())
+        if(userRepository.existsByEmail(userDto.getEmail()))
         {
             throw new UserAlreadyExistsException("There is an account with that email address: " + userDto.getEmail());
         }
@@ -65,7 +63,8 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new AuthorityNotFoundException("Default authority not found"));
         user.addAuthority(auth);
 
-        System.out.print("successfully added a User");
+        userRepository.save(user);
+        logger.info("Successfully registered new user: {}", user.getEmail());
     }
 
     public Optional<Users> findByEmail(String email)
@@ -90,20 +89,12 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public void initiatePasswordReset(String email)
-    {
-        userRepository.findByEmail(email).ifPresent(user ->{
-            String rawToken = tokenService.createAndSaveResetToken(user.getId());
-            emailService.sendPasswordResetEmail(email, rawToken);
-        });
-    }
 
-    @Transactional
-    public void completePasswordReset(String rawToken, String password, String confirmPassword)
+    public void updatePassword(Long userId, String encodedPassword)
     {
-        PasswordResetToken token = tokenService.verifyTokenForDisplay(rawToken);
-        this.changePassword(token.getUserId(), password, confirmPassword);
-        token.setUsed(true);
+        Users user= userRepository.findById(userId).orElseThrow(()->
+                new UserNotFoundException("User couldn't found by id : "+userId));
+        user.setPassword(encodedPassword);
     }
 
 

@@ -1,7 +1,6 @@
 package com.khan.wardroby.controller;
 
-import com.khan.wardroby.service.PasswordResetTokenService;
-import com.khan.wardroby.service.UserService;
+import com.khan.wardroby.service.PasswordManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,20 +13,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/reset-password")
 public class PasswordResetController {
-
-    UserService service;
-    PasswordResetTokenService tokenService;
+    private final PasswordManagementService service;
 
     @Autowired
-    PasswordResetController(UserService service, PasswordResetTokenService tokenService) {
+    PasswordResetController(PasswordManagementService service) {
         this.service = service;
-        this.tokenService = tokenService;
     }
 
 
     @GetMapping()
     public String showResetPasswordForm(@RequestParam("token") String token, Model model) {
-       tokenService.verifyTokenForDisplay(token);
+       // We only need to pass the token to the form. 
+       // The form will then POST it back for verification and completion.
        model.addAttribute("token",token);
        return "reset-password";
     }
@@ -38,7 +35,7 @@ public class PasswordResetController {
                                            @RequestParam("password") String password,
                                            @RequestParam("confirm-password") String confirmPassword,
                                            Model model) {
-        service.completePasswordReset(token, password, confirmPassword);
+        service.completeReset(token, password, confirmPassword);
         return "redirect:login?resetSuccess";
     }
 
