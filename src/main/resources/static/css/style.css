@@ -3,6 +3,7 @@
     /* front family for apple and android*/
     --bs-body-font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     /*  Brand Primary  */
+    --color-brand-primary-light: #C4976E;
     --color-brand-primary: #B5835B;
     --color-brand-primary-dark: #8B5E48;
     --color-brand-on-primary: #FFFFFF;
@@ -149,13 +150,29 @@
 
 /* 2. Fix the Blue Buttons */
 .btn-primary {
+    --bs-btn-color: var(--color-brand-on-primary);       /* white by default */
+    --bs-btn-hover-color: var(--color-brand-on-primary); /* stay white on hover */
+    --bs-btn-hover-bg: var(--color-brand-primary-light);                          /* lighter than primary, not darker */
     --bs-btn-bg: var(--color-brand-primary);
     --bs-btn-border-color: var(--color-brand-primary);
-    --bs-btn-hover-bg: var(--color-brand-primary-dark);
     --bs-btn-hover-border-color: var(--color-brand-primary-dark);
     --bs-btn-active-bg: var(--color-brand-primary-dark);
     --bs-btn-active-border-color: var(--color-brand-primary-dark);
     color: var(--color-brand-on-primary);
+}
+
+.btn-secondary{
+
+    --bs-btn-color: var(--color-text-primary);
+    --bs-btn-hover-color: var(--color-text-primary);     /* stays black on hover */
+    --bs-btn-bg: var(--color-brand-on-primary);
+    --bs-btn-border-color: var(--color-brand-primary-soft);
+
+    --bs-btn-hover-bg: #fdf0e0;
+    --bs-btn-hover-border-color: #eaceb2;
+    --bs-btn-active-bg: var(--color-brand-primary-dark);
+    --bs-btn-active-border-color: var(--color-brand-primary-dark);
+    color: black;
 }
 
 /* 3. Fix the Text Links */
