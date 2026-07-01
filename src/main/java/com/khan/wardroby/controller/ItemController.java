@@ -44,7 +44,7 @@ public class ItemController {
     {
         if(result.hasErrors())
         {
-            throw new InvalidItemDefinitionException("Invalid Item definition, Kindly check the item details");
+            return "add-item-form";
         }
         Item itemEntity = itemMapper.toEntity(itemDTO);
         itemService.addItem(itemEntity, currentUser);
