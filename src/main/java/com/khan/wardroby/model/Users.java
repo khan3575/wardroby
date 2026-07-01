@@ -3,6 +3,10 @@ package com.khan.wardroby.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,12 +17,16 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Setter
+@Getter
 @Entity
 @Table(name="users")
 public class Users implements UserDetails {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @Email
@@ -30,13 +38,16 @@ public class Users implements UserDetails {
     @Column(name="password" , nullable=false)
     private String password;
 
+
     @NotNull
     @Column(name="first_name" , nullable =false)
     private String firstName;
 
+
     @NotNull
     @Column(name="last_name",nullable = false)
     private String lastName;
+
 
     @Column(name="enabled")
     private Boolean enabled = true;
@@ -53,6 +64,7 @@ public class Users implements UserDetails {
     }
 
 
+    @NullMarked
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities.stream()
@@ -65,6 +77,7 @@ public class Users implements UserDetails {
         return password;
     }
 
+    @NullMarked
     @Override
     public String getUsername() {
         return email;
@@ -88,54 +101,6 @@ public class Users implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.enabled;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override

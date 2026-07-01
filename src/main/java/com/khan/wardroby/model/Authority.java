@@ -3,6 +3,17 @@ package com.khan.wardroby.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import lombok.NoArgsConstructor;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 @Entity
 @Table(name="authorities")
 public class Authority {
@@ -15,29 +26,4 @@ public class Authority {
     private String authority;
 
 
-    public Authority(){}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAuthority() {
-        return authority;
-    }
-
-    public void setAuthority(String authority) {
-        this.authority = authority;
-    }
-
-    @Override
-    public String toString() {
-        return "Authority{" +
-                "id=" + id +
-                ", authority='" + authority + '\'' +
-                '}';
-    }
 }
