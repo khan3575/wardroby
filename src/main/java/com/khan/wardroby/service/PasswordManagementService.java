@@ -1,6 +1,6 @@
 package com.khan.wardroby.service;
 
-import com.khan.wardroby.exception.UserNotFoundException;
+
 import com.khan.wardroby.model.PasswordResetToken;
 import com.khan.wardroby.model.Users;
 import jakarta.transaction.Transactional;
@@ -29,10 +29,11 @@ public class PasswordManagementService {
     @Transactional
     public void initiateReset(String email)
     {
-        Users user = userService.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
-        String rawToken = tokenService.createToken(user);
-        emailService.sendPasswordResetEmail(email, rawToken);
-        logger.info("Initiated password reset for user: {}", email);
+        userService.findByEmail(email).ifPresent(user ->{
+            String rawToken = tokenService.createToken(user);
+            emailService.sendPasswordResetEmail(email, rawToken);
+            logger.info("Initiated password reset for user: {}", email);
+        });
     }
 
     @Transactional

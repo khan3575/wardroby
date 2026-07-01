@@ -59,9 +59,6 @@ public class Users implements UserDetails {
                 .map(auth -> new SimpleGrantedAuthority(auth.getAuthority()))
                 .collect(Collectors.toList());
     }
-    public Set<Authority> getAuthoritiesSet() {
-        return this.authorities;
-    }
 
     @Override
     public @Nullable String getPassword() {

@@ -36,7 +36,7 @@ public class PasswordResetController {
                                            @RequestParam("confirm-password") String confirmPassword,
                                            Model model) {
         service.completeReset(token, password, confirmPassword);
-        return "redirect:login?resetSuccess";
+        return "redirect:/login?resetSuccess";
     }
 
 

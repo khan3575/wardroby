@@ -15,7 +15,7 @@ public interface UserMapper {
     /* if specifically add data
     * @Mapping(source = "name", target ="fullName")
     * if entity has address (obj) and then need a value of it
-    * @Mapping(source ="address.street" terget="streetName")
+    * @Mapping(source ="address.street" target="streetName")
     *  */
     @Mapping(target="password", ignore=true)
     @Mapping(target="confirmPassword", ignore=true)
@@ -27,6 +27,5 @@ public interface UserMapper {
     @Mapping(target="authorities", ignore=true)
     @Mapping(target="password" , ignore=true)
     Users toEntity(UserDTO userDTO);
-
 
 }

@@ -11,6 +11,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+
+    @ExceptionHandler({InvalidItemDefinitionException.class,ItemException.class})
+    public String handleItemErrors(ItemException ex, Model model)
+    {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "dashboard";
+    }
+
     @ExceptionHandler({PasswordResetTokenExpiredException.class,
             InvalidPasswordResetTokenException.class,TokenUsedException.class, AuthorityNotFoundException.class})
     public String handlePasswordResetError(AuthException ex, Model model)
@@ -52,6 +60,8 @@ public class GlobalExceptionHandler {
         model.addAttribute("errorMessage", e.getMessage());
         return "login";
     }
+
+
 
 
 }
