@@ -5,6 +5,7 @@ import com.khan.wardroby.exception.InvalidItemDefinitionException;
 import com.khan.wardroby.mapper.ItemMapper;
 import com.khan.wardroby.model.Item;
 import com.khan.wardroby.model.Users;
+import com.khan.wardroby.service.ImageStorageService;
 import com.khan.wardroby.service.ItemService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,12 @@ public class ItemController {
 
     private final ItemMapper itemMapper;
     private final ItemService itemService;
+    private final ImageStorageService imgService;
     @Autowired
-    public ItemController( ItemMapper itemMapper, ItemService itemService) {
+    public ItemController( ItemMapper itemMapper, ItemService itemService, ImageStorageService imgService) {
         this.itemMapper = itemMapper;
         this.itemService = itemService;
+        this.imgService = imgService;
     }
 
 
@@ -46,11 +49,13 @@ public class ItemController {
         {
             return "add-item-form";
         }
+        String savedPath = imgService.uploadImage(itemDTO.getImageFile());
         Item itemEntity = itemMapper.toEntity(itemDTO);
+        itemEntity.setImagePath(savedPath);
         itemService.addItem(itemEntity, currentUser);
 
 
-        return "dashboard";
+        return "redirect:/dashboard";
     }
 
 

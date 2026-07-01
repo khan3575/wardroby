@@ -7,7 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel="spring")
 public interface ItemMapper {
-
     ItemDTO toDTO(Item item);
 
     @Mapping(target="id" , ignore=true)
