@@ -80,20 +80,31 @@
                                         <input type="text" class="form-control rounded-3 py-2" id="color" name="color" placeholder="e.g., Off-White">
                                     </div>
 
-                                    <!-- Category Field Selector (@NotNull Map to Enum) -->
+<!--                                    &lt;!&ndash; Category Field Selector (@NotNull Map to Enum) &ndash;&gt;-->
+<!--                                    <div class="col-12">-->
+<!--                                        <label for="category" class="form-label fw-semibold text-secondary small text-uppercase tracking-wider">Category *</label>-->
+<!--                                        <select class="form-select rounded-3 py-2" id="category" name="category" required>-->
+<!--                                            <option value="" disabled selected hidden>Choose a category...</option>-->
+<!--                                            <option value="TOPS">Tops & Shirts</option>-->
+<!--                                            <option value="BOTTOMS">Bottoms & Pants</option>-->
+<!--                                            <option value="OUTERWEAR">Outerwear & Jackets</option>-->
+<!--                                            <option value="SHOES">Shoes</option>-->
+<!--                                            <option value="ACCESSORIES">Accessories</option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+
+<!-- Commented the hardcoded option.     now fetching the Cateogries form the methods-->
                                     <div class="col-12">
                                         <label for="category" class="form-label fw-semibold text-secondary small text-uppercase tracking-wider">Category *</label>
-                                        <select class="form-select rounded-3 py-2" id="category" name="category" required>
-                                            <option value="" disabled selected hidden>Choose a category...</option>
-                                            <option value="TOPS">Tops & Shirts</option>
-                                            <option value="BOTTOMS">Bottoms & Pants</option>
-                                            <option value="OUTERWEAR">Outerwear & Jackets</option>
-                                            <option value="SHOES">Shoes</option>
-                                            <option value="ACCESSORIES">Accessories</option>
+                                        <select class="form-select rounded-3 py-2" th:field="*{category}" id="category" required>
+                                            <option value="" disabled selected hidden>Choose category..</option>
+                                            <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat.label}">
+                                            </option>
                                         </select>
                                     </div>
 
-                                    <!-- Season Field Selector (@NotNull Map to Enum) -->
+
+                                                                            <!-- Season Field Selector (@NotNull Map to Enum) -->
                                     <div class="col-12">
                                         <label for="season" class="form-label fw-semibold text-secondary small text-uppercase tracking-wider">Season *</label>
                                         <select class="form-select rounded-3 py-2" id="season" name="season" required>

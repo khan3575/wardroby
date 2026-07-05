@@ -5,6 +5,7 @@ import com.khan.wardroby.exception.InvalidItemDefinitionException;
 import com.khan.wardroby.mapper.ItemMapper;
 import com.khan.wardroby.model.Item;
 import com.khan.wardroby.model.Users;
+import com.khan.wardroby.model.enums.Category;
 import com.khan.wardroby.service.ImageStorageService;
 import com.khan.wardroby.service.ItemService;
 import jakarta.validation.Valid;
@@ -39,14 +40,16 @@ public class ItemController {
     public String getAddItemForm(Model model)
     {
         model.addAttribute("itemDTO", new ItemDTO());
+        model.addAttribute("categories", Category.values());
         return "add-item-form";
     }
 
     @PostMapping("/add-item")
-    public String postAddItemForm(@Valid @ModelAttribute("itemDTO") ItemDTO itemDTO, BindingResult result, @AuthenticationPrincipal Users currentUser)
+    public String postAddItemForm(@Valid @ModelAttribute("itemDTO") ItemDTO itemDTO, BindingResult result, @AuthenticationPrincipal Users currentUser, Model model)
     {
         if(result.hasErrors())
         {
+            model.addAttribute("categories", Category.values());
             return "add-item-form";
         }
         String savedPath = imgService.uploadImage(itemDTO.getImageFile(),currentUser.getId());
