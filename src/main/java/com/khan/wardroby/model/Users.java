@@ -64,8 +64,7 @@ public class Users implements UserDetails {
     }
 
 
-    @NullMarked
-    @Override
+@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities.stream()
                 .map(auth -> new SimpleGrantedAuthority(auth.getAuthority()))
