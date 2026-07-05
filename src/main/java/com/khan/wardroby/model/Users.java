@@ -77,9 +77,8 @@ public class Users implements UserDetails {
         return password;
     }
 
-    @NullMarked
-    @Override
-    public String getUsername() {
+@Override
+public String getUsername() {
         return email;
     }
 
