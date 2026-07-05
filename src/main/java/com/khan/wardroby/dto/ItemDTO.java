@@ -25,6 +25,7 @@ public class ItemDTO {
 
     private String imagePath;
 
+    @NotNull
     private Category category;
 
     @NotNull
