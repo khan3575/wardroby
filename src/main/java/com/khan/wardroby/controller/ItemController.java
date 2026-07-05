@@ -49,13 +49,25 @@ public class ItemController {
     @PostMapping("/add-item")
     public String postAddItemForm(@Valid @ModelAttribute("itemDTO") ItemDTO itemDTO, BindingResult result, @AuthenticationPrincipal Users currentUser, Model model)
     {
-        if(result.hasErrors())
-        {
-            model.addAttribute("categories", Category.values());
-            model.addAttribute("seasons", Season.values());
-            return "add-item-form";
-        }
-        String savedPath = imgService.uploadImage(itemDTO.getImageFile(),currentUser.getId());
+if(result.hasErrors())
+{
+    model.addAttribute("categories", Category.values());
+    model.addAttribute("seasons", Season.values());
+    return "add-item-form";
+}
+if (itemDTO.getCategory() == null) {
+    model.addAttribute("categories", Category.values());
+    model.addAttribute("seasons", Season.values());
+    model.addAttribute("errorMessage", "Please select a category.");
+    return "add-item-form";
+}
+if (itemDTO.getImageFile() == null || itemDTO.getImageFile().isEmpty()) {
+    model.addAttribute("categories", Category.values());
+    model.addAttribute("seasons", Season.values());
+    model.addAttribute("errorMessage", "Please upload an image file.");
+    return "add-item-form";
+}
+String savedPath = imgService.uploadImage(itemDTO.getImageFile(),currentUser.getId());
         Item itemEntity = itemMapper.toEntity(itemDTO);
         itemEntity.setImagePath(savedPath);
         itemService.addItem(itemEntity, currentUser);
