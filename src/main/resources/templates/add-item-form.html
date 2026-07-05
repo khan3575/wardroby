@@ -21,11 +21,12 @@
             <!-- Main Content Area -->
             <div class="bs-body-bg p-4 flex-grow-1">
 
-                <!-- Page Title Header -->
-                <div class="text-color-primary mb-4">
-                    <h2 class="fw-bold">Add New Item</h2>
-                    <p class="text-muted">Fill out the details below to add a new piece to your digital wardrobe.</p>
-                </div>
+<!-- Page Title Header -->
+<div class="text-color-primary mb-4">
+    <h2 class="fw-bold">Add New Item</h2>
+    <p class="text-muted">Fill out the details below to add a new piece to your digital wardrobe.</p>
+    <div th:if="${errorMessage}" class="alert alert-danger mt-3 mb-0" th:text="${errorMessage}"></div>
+</div>
 
                 <!-- Form Card Container -->
                 <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
