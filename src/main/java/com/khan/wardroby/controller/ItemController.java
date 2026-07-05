@@ -5,6 +5,9 @@ import com.khan.wardroby.exception.InvalidItemDefinitionException;
 import com.khan.wardroby.mapper.ItemMapper;
 import com.khan.wardroby.model.Item;
 import com.khan.wardroby.model.Users;
+import com.khan.wardroby.model.enums.Category;
+import com.khan.wardroby.model.enums.Season;
+import com.khan.wardroby.service.ImageStorageService;
 import com.khan.wardroby.service.ItemService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +26,12 @@ public class ItemController {
 
     private final ItemMapper itemMapper;
     private final ItemService itemService;
+    private final ImageStorageService imgService;
     @Autowired
-    public ItemController( ItemMapper itemMapper, ItemService itemService) {
+    public ItemController( ItemMapper itemMapper, ItemService itemService, ImageStorageService imgService) {
         this.itemMapper = itemMapper;
         this.itemService = itemService;
+        this.imgService = imgService;
     }
 
 
@@ -36,21 +41,39 @@ public class ItemController {
     public String getAddItemForm(Model model)
     {
         model.addAttribute("itemDTO", new ItemDTO());
+        model.addAttribute("categories", Category.values());
+        model.addAttribute("seasons", Season.values());
         return "add-item-form";
     }
 
     @PostMapping("/add-item")
-    public String postAddItemForm(@Valid @ModelAttribute("itemDTO") ItemDTO itemDTO, BindingResult result, @AuthenticationPrincipal Users currentUser)
+    public String postAddItemForm(@Valid @ModelAttribute("itemDTO") ItemDTO itemDTO, BindingResult result, @AuthenticationPrincipal Users currentUser, Model model)
     {
-        if(result.hasErrors())
-        {
-            return "add-item-form";
-        }
+if(result.hasErrors())
+{
+    model.addAttribute("categories", Category.values());
+    model.addAttribute("seasons", Season.values());
+    return "add-item-form";
+}
+if (itemDTO.getCategory() == null) {
+    model.addAttribute("categories", Category.values());
+    model.addAttribute("seasons", Season.values());
+    model.addAttribute("errorMessage", "Please select a category.");
+    return "add-item-form";
+}
+if (itemDTO.getImageFile() == null || itemDTO.getImageFile().isEmpty()) {
+    model.addAttribute("categories", Category.values());
+    model.addAttribute("seasons", Season.values());
+    model.addAttribute("errorMessage", "Please upload an image file.");
+    return "add-item-form";
+}
+String savedPath = imgService.uploadImage(itemDTO.getImageFile(),currentUser.getId());
         Item itemEntity = itemMapper.toEntity(itemDTO);
+        itemEntity.setImagePath(savedPath);
         itemService.addItem(itemEntity, currentUser);
 
 
-        return "dashboard";
+        return "redirect:/dashboard";
     }
 
 

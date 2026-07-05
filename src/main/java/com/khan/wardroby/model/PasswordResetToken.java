@@ -2,11 +2,17 @@ package com.khan.wardroby.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 
+
+@Getter
+@Setter
+@ToString(exclude= "tokenHash")
+@NoArgsConstructor
 @Entity
 @Table(name="password_reset_tokens")
 public class PasswordResetToken {
@@ -30,56 +36,4 @@ public class PasswordResetToken {
     @Column(name="used")
     @JdbcTypeCode(SqlTypes.TINYINT)
     private Boolean used;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-    public Users getUser() {
-        return user;
-    }
-
-    public void setUser(Users user) {
-        this.user = user;
-    }
-
-    public String getTokenHash() {
-        return tokenHash;
-    }
-
-    public void setTokenHash(String tokenHash) {
-        this.tokenHash = tokenHash;
-    }
-
-    public Instant getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(Instant expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-
-    public Boolean getUsed() {
-        return used;
-    }
-
-    public void setUsed(Boolean used) {
-        this.used = used;
-    }
-
-    @Override
-    public String toString() {
-        return "PasswordResetToken{" +
-                "id=" + id +
-                ", user=" + user +
-                ", tokenHash='" + tokenHash + '\'' +
-                ", expiryDate=" + expiryDate +
-                ", used=" + used +
-                '}';
-    }
 }

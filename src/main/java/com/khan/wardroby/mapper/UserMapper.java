@@ -22,7 +22,6 @@ public interface UserMapper {
     UserDTO toDto(Users user);
 
 
-    @Mapping(target="id", ignore=true)
     @Mapping(target="enabled" , ignore=true)
     @Mapping(target="authorities", ignore=true)
     @Mapping(target="password" , ignore=true)

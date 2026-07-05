@@ -1,5 +1,5 @@
 <header th:fragment="header" class="d-flex justify-content-between align-items-center px-4 py-3 border-bottom bg-body">
-  <div class="input-group" style="max-width:400px">
+<div class="input-group w-75" style="max-width:400px">
       <span class="input-group-text border-0 bg-tertiary text-secondary  rounded-start-4">
         <i class="search-icon bi bi-search fw-100"></i>
       </span>
@@ -8,7 +8,7 @@
       <button type="submit" class="bg-body text-secondary border">⌘K</button>
     </span>
   </div>
-  <div class="d-flex gap-2">
+<div class="d-flex w-25 gap-2">
     <a th:href="@{/notification}" class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center border-0 bg-body-tartiary"> <span class="bi bi-bell"></span> </a>
     <a th:href="@{/toggle-theme}" class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center border-0 bg-body-tartiary"> <span class="bi bi-moon"></span> </a>
   </div>
