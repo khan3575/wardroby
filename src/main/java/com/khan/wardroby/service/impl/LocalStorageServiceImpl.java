@@ -12,11 +12,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 @ConditionalOnProperty(name="storage.provider", havingValue="local")
 public class LocalStorageServiceImpl implements ImageStorageService {
+    private static final List<String> ALLOWED_IMAGE_TYPE = List.of("image/jpeg", "image/png", "image/webp");
 
     //takes upload directory from the properties file
     @Value("${upload.detail.dir}")
@@ -37,27 +39,38 @@ public class LocalStorageServiceImpl implements ImageStorageService {
 //            File dir = new File(userDir);
             // check if dir exists or create
             Files.createDirectories(userDir);
+
+            String contentType = file.getContentType();
+            if(contentType == null || !ALLOWED_IMAGE_TYPE.contains(contentType))
+            {
+                throw new ItemException("Unsupported Content Type (supports only : jpeg, png, webp only) ");
+            }
 //            if(!dir.exists())
 //            {
 //                dir.mkdirs();
 //            }
-            // extension is set to .jpg as test latter make it dynamic.
-            String extension = ".jpg";
+            // extension are seted to allowed content type.
+            String extension = "."+contentType.substring(contentType.lastIndexOf("/")+1);
             String uniqueFileName = UUID.randomUUID()+extension;
 
             Path targetLocation = userDir.resolve(uniqueFileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             return "/uploads/"+userId+"/"+uniqueFileName;
-        } catch (Exception e)
+        }
+        catch(ItemException e)
         {
-            throw new ItemException("Failed to save file");
+            throw e;
+        }
+        catch (Exception e)
+        {
+            throw new ItemException("File not created. Permission issue");
         }
     }
 
     @Override
     public void deleteImage(String filePath) {
 
-        /* deleteing the local file */
+        /* deleting the local file */
         try{
             //trimming "/uploads/"
             String filename = filePath.substring("/uploads/".length());

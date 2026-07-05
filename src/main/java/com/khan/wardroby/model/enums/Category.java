@@ -1,7 +1,7 @@
 package com.khan.wardroby.model.enums;
 
 public enum Category {
-    TOP("Top & Shirts"),
+    TOP("Tops & Shirts"),
     BOTTOM("Bottoms & Pants"),
     OUTERWEAR("Outerwear & Jackets"),
     FOOTWEAR("Shoes"),

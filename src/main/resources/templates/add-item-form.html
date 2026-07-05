@@ -55,7 +55,7 @@
                                     </div>
                                 </div>
                                 <!-- Hidden Native Input Field -->
-                                <input type="file" id="imageFile" th:field="*{imageFile}" accept="image/*" class="d-none" required onchange="handleImagePreview(this)">
+                                <input type="file" id="imageFile" th:field="*{imageFile}" accept="image/jpeg, image/png, image/webp" class="d-none" required onchange="handleImagePreview(this)">
                             </div>
 
                             <!-- Right Column: Item Text Details Fields -->
@@ -105,15 +105,24 @@
 
 
                                                                             <!-- Season Field Selector (@NotNull Map to Enum) -->
+<!--                                    <div class="col-12">-->
+<!--                                        <label for="season" class="form-label fw-semibold text-secondary small text-uppercase tracking-wider">Season *</label>-->
+<!--                                        <select class="form-select rounded-3 py-2" id="season" name="season" required>-->
+<!--                                            <option value="" disabled selected hidden>Select targeted season...</option>-->
+<!--                                            <option value="SPRING">Spring</option>-->
+<!--                                            <option value="SUMMER">Summer</option>-->
+<!--                                            <option value="AUTUMN">Autumn / Fall</option>-->
+<!--                                            <option value="WINTER">Winter</option>-->
+<!--                                            <option value="ALL_SEASON">All Season</option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
                                     <div class="col-12">
-                                        <label for="season" class="form-label fw-semibold text-secondary small text-uppercase tracking-wider">Season *</label>
-                                        <select class="form-select rounded-3 py-2" id="season" name="season" required>
-                                            <option value="" disabled selected hidden>Select targeted season...</option>
-                                            <option value="SPRING">Spring</option>
-                                            <option value="SUMMER">Summer</option>
-                                            <option value="AUTUMN">Autumn / Fall</option>
-                                            <option value="WINTER">Winter</option>
-                                            <option value="ALL_SEASON">All Season</option>
+                                        <label for="season"
+                                               class="form-label fw-semibold text-secondary small text-uppercase tracking-wider">Season *</label>
+                                        <select th:field="*{season}" id="season" class="form-select rounded-3 py-2" required>
+                                            <option value="" disabled selected hidden>Select targeted season..</option>
+                                            <option th:each="sea : ${seasons}" th:value="${sea}" th:text="${sea.label}">
+                                            </option>
                                         </select>
                                     </div>
                                 </div>

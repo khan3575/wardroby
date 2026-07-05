@@ -6,6 +6,7 @@ import com.khan.wardroby.mapper.ItemMapper;
 import com.khan.wardroby.model.Item;
 import com.khan.wardroby.model.Users;
 import com.khan.wardroby.model.enums.Category;
+import com.khan.wardroby.model.enums.Season;
 import com.khan.wardroby.service.ImageStorageService;
 import com.khan.wardroby.service.ItemService;
 import jakarta.validation.Valid;
@@ -41,6 +42,7 @@ public class ItemController {
     {
         model.addAttribute("itemDTO", new ItemDTO());
         model.addAttribute("categories", Category.values());
+        model.addAttribute("seasons", Season.values());
         return "add-item-form";
     }
 
@@ -50,6 +52,7 @@ public class ItemController {
         if(result.hasErrors())
         {
             model.addAttribute("categories", Category.values());
+            model.addAttribute("seasons", Season.values());
             return "add-item-form";
         }
         String savedPath = imgService.uploadImage(itemDTO.getImageFile(),currentUser.getId());
