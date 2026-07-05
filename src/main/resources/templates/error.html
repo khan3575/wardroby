@@ -16,7 +16,7 @@
                 <div class="display-1 fw-bold text-muted opacity-25 mb-0" th:text="${status} ?: '!'">500</div>
                 <h1 class="h2 fw-bold text-dark mb-3" th:text="${error} ?: 'Unexpected Error'">Error occurred</h1>
                 <p class="text-secondary mb-4" th:text="${message} ?: 'Something went wrong on our end.'">Something went wrong.</p>
-                <a th:href="@{/}" class="btn btn-primary px-4 py-2">
+                <a th:href="@{/dashboard}" class="btn btn-primary px-4 py-2">
                     <i class="bi bi-house-door me-2"></i>Return to Safety
                 </a>
             </div>

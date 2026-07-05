@@ -54,7 +54,7 @@
     --bs-border-color: var(--color-border-subtle);
     --bs-success: var(--color-status-success);
     --bs-danger: var(--color-status-destructive);
-    --bs-border-radius: 50rem;
+    --bs-border-radius: 1rem;
 }
 
 [data-bs-theme="dark"]{
@@ -158,6 +158,7 @@
     --bs-btn-hover-border-color: var(--color-brand-primary-dark);
     --bs-btn-active-bg: var(--color-brand-primary-dark);
     --bs-btn-active-border-color: var(--color-brand-primary-dark);
+    --bs-nav-link-hover-color: var(--color-brand-on-primary);
     color: var(--color-brand-on-primary);
 }
 
@@ -167,6 +168,8 @@
     --bs-btn-hover-color: var(--color-text-primary);     /* stays black on hover */
     --bs-btn-bg: var(--color-brand-on-primary);
     --bs-btn-border-color: var(--color-brand-primary-soft);
+    --bs-nav-link-hover-color: var(--color-text-primary);
+
 
     --bs-btn-hover-bg: #fdf0e0;
     --bs-btn-hover-border-color: #eaceb2;
@@ -214,3 +217,4 @@
     border-radius: 8px; /* Hardcoded because your default is 50rem */
     color: var(--color-brand-on-primary);
 }
+

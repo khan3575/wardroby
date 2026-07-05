@@ -24,7 +24,7 @@ public class LocalStorageServiceImpl implements ImageStorageService {
 
 
     @Override
-    public String uploadImage(MultipartFile file) {
+    public String uploadImage(MultipartFile file, Long userId) {
         /* file uploading and returning accessable file path */
 //        if file empty
         if(file.isEmpty())
@@ -32,19 +32,22 @@ public class LocalStorageServiceImpl implements ImageStorageService {
             throw new ItemException("Item upload failed");
         }
         try{
-            File dir = new File(uploadDir);
+
+            Path userDir = Paths.get(uploadDir, String.valueOf(userId));
+//            File dir = new File(userDir);
             // check if dir exists or create
-            if(!dir.exists())
-            {
-                dir.mkdirs();
-            }
+            Files.createDirectories(userDir);
+//            if(!dir.exists())
+//            {
+//                dir.mkdirs();
+//            }
             // extension is set to .jpg as test latter make it dynamic.
             String extension = ".jpg";
             String uniqueFileName = UUID.randomUUID()+extension;
 
-            Path targetLocation = Paths.get(uploadDir).resolve(uniqueFileName);
+            Path targetLocation = userDir.resolve(uniqueFileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            return "/uploads/"+uniqueFileName;
+            return "/uploads/"+userId+"/"+uniqueFileName;
         } catch (Exception e)
         {
             throw new ItemException("Failed to save file");
@@ -56,7 +59,8 @@ public class LocalStorageServiceImpl implements ImageStorageService {
 
         /* deleteing the local file */
         try{
-            String filename = filePath.substring(filePath.lastIndexOf("/")+1);
+            //trimming "/uploads/"
+            String filename = filePath.substring("/uploads/".length());
             Path path = Paths.get(uploadDir).resolve(filename);
             Files.deleteIfExists(path);
         }

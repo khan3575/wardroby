@@ -49,7 +49,7 @@ public class ItemController {
         {
             return "add-item-form";
         }
-        String savedPath = imgService.uploadImage(itemDTO.getImageFile());
+        String savedPath = imgService.uploadImage(itemDTO.getImageFile(),currentUser.getId());
         Item itemEntity = itemMapper.toEntity(itemDTO);
         itemEntity.setImagePath(savedPath);
         itemService.addItem(itemEntity, currentUser);
