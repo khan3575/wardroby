@@ -70,16 +70,24 @@ public class LocalStorageServiceImpl implements ImageStorageService {
     @Override
     public void deleteImage(String filePath) {
 
-        /* deleting the local file */
-        try{
-            //trimming "/uploads/"
-            String filename = filePath.substring("/uploads/".length());
-            Path path = Paths.get(uploadDir).resolve(filename);
-            Files.deleteIfExists(path);
-        }
-        catch(Exception e)
-        {
-            throw new ItemException("deletation filed");
-        }
+/* deleting the local file */
+try{
+    if (filePath == null || !filePath.startsWith("/uploads/")) {
+        throw new ItemException("Invalid file path");
+    }
+
+    String relative = filePath.substring("/uploads/".length());
+    Path baseDir = Paths.get(uploadDir).toAbsolutePath().normalize();
+    Path path = baseDir.resolve(relative).normalize();
+    if (!path.startsWith(baseDir)) {
+        throw new ItemException("Invalid file path");
+    }
+
+    Files.deleteIfExists(path);
+}
+catch(Exception e)
+{
+    throw new ItemException("Deletion failed");
+}
     }
 }
