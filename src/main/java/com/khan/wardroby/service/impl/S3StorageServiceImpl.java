@@ -64,12 +64,15 @@ public class S3StorageServiceImpl implements ImageStorageService {
 
             return endpoint + "/" + bucketName + "/" + key;
         }
-        catch(IOException e){
-            throw new ItemException("Faile to read file system: "+e.getMessage() );
+        catch (ItemException e) {
+            throw e;
         }
-        catch(Exception e)
+        catch (IOException e){
+            throw new ItemException("Failed to read uploaded file", e);
+        }
+        catch (Exception e)
         {
-            throw new ItemException("S3 upload failed "+ e.getMessage());
+            throw new ItemException("S3 upload failed", e);
         }
     }
 
