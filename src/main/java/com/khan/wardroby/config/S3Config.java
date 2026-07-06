@@ -27,6 +27,12 @@ public class S3Config {
 
     @Bean
     public S3Client s3Client(){
+
+        /*
+        * for actual s3 comment out
+        * remove ---- forcePathStyle()
+        * remove ---- endpointOverride()
+        * */
         return S3Client.builder().endpointOverride(URI.create(endpoint))
                 .credentialsProvider(StaticCredentialsProvider
                         .create(AwsBasicCredentials.create(accessKey,secretKey)))
