@@ -40,7 +40,7 @@ public class S3StorageServiceImpl implements ImageStorageService {
     public String uploadImage(MultipartFile file, Long userId) {
         if(file.isEmpty())
         {
-            throw new ItemException("Item upload filed: File is empty");
+            throw new ItemException("Item upload failed: File is empty");
         }
 
         try{
