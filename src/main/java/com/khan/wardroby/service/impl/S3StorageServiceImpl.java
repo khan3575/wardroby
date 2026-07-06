@@ -47,7 +47,7 @@ public class S3StorageServiceImpl implements ImageStorageService {
             String contentType = file.getContentType();
             if(contentType==null || !ALLOWED_IMAGE_TYPES.contains(contentType))
             {
-                throw new ItemException("Unsupported content types. (Only supports jpeg, png, webp.");
+                throw new ItemException("Unsupported content type. Only image/jpeg, image/png, and image/webp are supported.");
             }
             String extension = "." + contentType.substring(contentType.lastIndexOf("/")+1);
             String uniqueName = UUID.randomUUID().toString() + extension;
