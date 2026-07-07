@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@ConditionalOnProperty(name="storage.provider", havingValue="s3")
+//@ConditionalOnProperty(name="storage.provider", havingValue="s3") commenting it to let it be the only bean for service.
 public class S3StorageServiceImpl implements ImageStorageService {
 
     private static final List<String> ALLOWED_IMAGE_TYPES = List.of("image/jpeg","image/png","image/webp");
@@ -95,7 +95,5 @@ public class S3StorageServiceImpl implements ImageStorageService {
         {
             throw new ItemException("S3 delete failed : "+e.getMessage() );
         }
-
     }
-
 }
