@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
@@ -51,4 +53,6 @@ public class Item {
     @Column(name="season", nullable=false)
     private Season season;
 
+    @Column(name="created_at")
+    private LocalDateTime createdAt;
 }

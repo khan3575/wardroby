@@ -1,12 +1,9 @@
 package com.khan.wardroby.controller;
 
 import com.khan.wardroby.dto.ItemDTO;
-import com.khan.wardroby.mapper.ItemMapper;
-import com.khan.wardroby.model.Item;
 import com.khan.wardroby.model.Users;
 import com.khan.wardroby.model.enums.Category;
 import com.khan.wardroby.model.enums.Season;
-import com.khan.wardroby.service.ImageStorageService;
 import com.khan.wardroby.service.ItemService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/items")
 public class ItemController {
 
-    private final ItemMapper itemMapper;
     private final ItemService itemService;
-    private final ImageStorageService imgService;
     @Autowired
-    public ItemController( ItemMapper itemMapper, ItemService itemService, ImageStorageService imgService) {
-        this.itemMapper = itemMapper;
+    public ItemController(ItemService itemService) {
         this.itemService = itemService;
-        this.imgService = imgService;
+
     }
 
     @ModelAttribute("categories")
@@ -57,24 +51,14 @@ public class ItemController {
     {
         if(result.hasErrors())
         {
+            model.addAttribute("errorMessage", "Invalid inputs");
             return "add-item-form";
         }
-        if (itemDTO.getCategory() == null) {
-            model.addAttribute("errorMessage", "Please select a category.");
-            return "add-item-form";
-        }
-        if (itemDTO.getImageFile() == null || itemDTO.getImageFile().isEmpty()) {
-            model.addAttribute("errorMessage", "Please upload an image file.");
-            return "add-item-form";
-        }
-        String savedPath = imgService.uploadImage(itemDTO.getImageFile(),currentUser.getId());
-        Item itemEntity = itemMapper.toEntity(itemDTO);
-        itemEntity.setImagePath(savedPath);
-        itemService.addItem(itemEntity, currentUser);
-
+        itemService.addItem(itemDTO, currentUser);
 
         return "redirect:/dashboard";
     }
+
 
 
 }
